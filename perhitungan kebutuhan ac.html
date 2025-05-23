@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Kapasitas AC SNI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #333;
+    }
+    label {
+      margin-top: 10px;
+      display: block;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1e7e34;
+    }
+    #hasil {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kalkulator Kapasitas AC Sesuai SNI</h2>
+
+  <label for="panjang">Panjang Ruangan (m):</label>
+  <input type="number" id="panjang" step="0.1">
+
+  <label for="lebar">Lebar Ruangan (m):</label>
+  <input type="number" id="lebar" step="0.1">
+
+  <label for="tinggi">Tinggi Ruangan (m):</label>
+  <input type="number" id="tinggi" step="0.1">
+
+  <label for="penghuni">Jumlah Penghuni:</label>
+  <input type="number" id="penghuni" value="1">
+
+  <label for="peralatan">Beban Panas dari Peralatan (Watt):</label>
+  <input type="number" id="peralatan" value="0">
+
+  <label for="jendela">Jumlah Jendela:</label>
+  <input type="number" id="jendela" value="0">
+
+  <button onclick="hitungAC()">Hitung Kapasitas AC</button>
+
+  <div id="hasil"></div>
+
+  <script>
+    function hitungAC() {
+      const panjang = parseFloat(document.getElementById('panjang').value);
+      const lebar = parseFloat(document.getElementById('lebar').value);
+      const tinggi = parseFloat(document.getElementById('tinggi').value);
+      const penghuni = parseInt(document.getElementById('penghuni').value);
+      const peralatan = parseFloat(document.getElementById('peralatan').value);
+      const jendela = parseInt(document.getElementById('jendela').value);
+
+      const volume = panjang * lebar * tinggi;
+      const bebanRuangan = volume * 25; // 25 Watt per m3
+      const bebanPenghuni = penghuni * 100; // 100 Watt per orang
+      const bebanJendela = jendela * 500; // 500 Watt per jendela
+
+      const totalBeban = bebanRuangan + bebanPenghuni + peralatan + bebanJendela;
+      const kapasitasBTU = totalBeban * 3.41;
+
+      const kapasitasPK = kapasitasBTU / 9000; // 1 PK = 9000 BTU
+
+      document.getElementById('hasil').innerText =
+        `Kapasitas AC yang Dibutuhkan: ${kapasitasBTU.toFixed(0)} BTU (${kapasitasPK.toFixed(2)} PK)`;
+    }
+  </script>
+</body>
+</html>
