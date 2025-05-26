@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalkulator Kebutuhan Air Bersih</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    label, select, input, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+    }
+    .result {
+      background-color: #f1f1f1;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kalkulator Kebutuhan Air Bersih</h1>
+
+  <label for="buildingType">Jenis Bangunan:</label>
+  <select id="buildingType" onchange="setDefaultConsumption()">
+    <option value="150">Rumah Tinggal (150 L/orang/hari)</option>
+    <option value="85">Perkantoran (85 L/orang/hari)</option>
+    <option value="50">Sekolah (50 L/orang/hari)</option>
+    <option value="300">Hotel (300 L/orang/hari)</option>
+  </select>
+
+  <label for="people">Jumlah Pengguna:</label>
+  <input type="number" id="people" min="1" placeholder="Masukkan jumlah pengguna">
+
+  <label for="consumption">Kebutuhan Air per Orang (liter/hari):</label>
+  <input type="number" id="consumption" min="1">
+
+  <button onclick="calculate()">Hitung Kebutuhan Air</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function setDefaultConsumption() {
+      const select = document.getElementById("buildingType");
+      document.getElementById("consumption").value = select.value;
+    }
+
+    function calculate() {
+      const people = parseInt(document.getElementById("people").value);
+      const consumption = parseFloat(document.getElementById("consumption").value);
+
+      if (isNaN(people) || isNaN(consumption) || people <= 0 || consumption <= 0) {
+        alert("Mohon masukkan data yang valid.");
+        return;
+      }
+
+      const daily = people * consumption;
+      const monthly = daily * 30;
+      const yearly = daily * 365;
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <strong>Hasil Perhitungan:</strong><br>
+        Kebutuhan Harian: ${daily.toLocaleString()} liter<br>
+        Kebutuhan Bulanan: ${monthly.toLocaleString()} liter<br>
+        Kebutuhan Tahunan: ${yearly.toLocaleString()} liter
+      `;
+    }
+
+    // Set nilai awal saat halaman dimuat
+    window.onload = setDefaultConsumption;
+  </script>
+</body>
+</html>
